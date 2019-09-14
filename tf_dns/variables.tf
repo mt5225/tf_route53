@@ -28,6 +28,6 @@ variable "sub_domains" {
   ]
 }
 
-variable "cnames" { 
+variable "cnames" {
   default = ["www", "api", "mail"]
 }
