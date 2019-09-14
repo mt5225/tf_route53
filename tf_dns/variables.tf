@@ -10,7 +10,7 @@ variable "ttl" {
   default = "300"
 }
 
-# DNS records
+# sub domain records
 variable "sub_domains" {
   default = [
     {
@@ -28,6 +28,7 @@ variable "sub_domains" {
   ]
 }
 
+#CNAME reocord for each sub domain
 variable "cnames" {
   default = ["www1", "api2", "mail3"]
 }

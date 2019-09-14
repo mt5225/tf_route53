@@ -1,7 +1,9 @@
+#create zone
 resource "aws_route53_zone" "primary" {
   name = "${var.zone_name}"
 }
 
+#create sub domain
 resource "aws_route53_record" "sub" {
   count   = "${length(var.sub_domains)}"
   zone_id = "${aws_route53_zone.primary.zone_id}"
@@ -16,6 +18,7 @@ locals {
   cname_records = setproduct("${var.cnames}", "${aws_route53_record.sub}")
 }
 
+# create cname record for each subdomain
 resource "aws_route53_record" "subsub" {
   count   = "${length(local.cname_records)}"
   zone_id = "${aws_route53_zone.primary.zone_id}"
