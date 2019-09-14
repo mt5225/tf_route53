@@ -14,3 +14,6 @@ Create a jenkins instance and job to run the terraform code on checkin to git.
 - ``iam_policy.json``  IAM group policy to run rf
 - ``tf_dns``  tf code to create Route53 records
 - ``jenkins`` exported jenkins job def
+
+# Getcha !
+- need to destroy before apply, otherwise you may got is ``Error: Cycle: aws_route53_record`` error while apply to exist zone
