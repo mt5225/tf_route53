@@ -14,21 +14,21 @@ variable "ttl" {
 variable "sub_domains" {
   default = [
     {
-      name   = "app11"
-      ipaddr = "10.0.10.1"
+      name   = "app1"
+      ipaddr = "10.0.0.1"
     },
     {
-      name   = "app22"
-      ipaddr = "10.0.20.2"
+      name   = "app2"
+      ipaddr = "10.0.0.2"
     },
     {
-      name   = "app33"
-      ipaddr = "10.0.30.3"
+      name   = "app3"
+      ipaddr = "10.0.0.3"
     },
   ]
 }
 
 #CNAME reocord for each sub domain
 variable "cnames" {
-  default = ["www1", "api2", "mail3"]
+  default = ["www", "api", "mail"]
 }
