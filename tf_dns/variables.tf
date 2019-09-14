@@ -14,20 +14,20 @@ variable "ttl" {
 variable "sub_domains" {
   default = [
     {
-      name   = "app1"
-      ipaddr = "10.0.0.1"
+      name   = "app11"
+      ipaddr = "10.0.10.1"
     },
     {
-      name   = "app2"
-      ipaddr = "10.0.0.2"
+      name   = "app22"
+      ipaddr = "10.0.20.2"
     },
     {
-      name   = "app3"
-      ipaddr = "10.0.0.3"
+      name   = "app33"
+      ipaddr = "10.0.30.3"
     },
   ]
 }
 
 variable "cnames" {
-  default = ["www", "api", "mail"]
+  default = ["www1", "api2", "mail3"]
 }
