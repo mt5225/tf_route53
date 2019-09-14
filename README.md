@@ -10,7 +10,7 @@ Create a jenkins instance and job to run the terraform code on checkin to git.
 - Update the array with a new subdomain,ip pair and commit your code to git.
 
 
-# Folders
-- ``iam_policy.json`` : IAM group policy to run rf
-- ``tf_dns`` : tf code to create Route53 records
-- jenkins job 
+# Folders & Files
+- ``iam_policy.json``  IAM group policy to run rf
+- ``tf_dns``  tf code to create Route53 records
+- ``jenkins`` exported jenkins job def
