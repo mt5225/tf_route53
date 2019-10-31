@@ -3,7 +3,18 @@
   <actions/>
   <description>check out route53 tf code and run it</description>
   <keepDependencies>false</keepDependencies>
-  <properties/>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>ZONE_NAME</name>
+          <description></description>
+          <defaultValue>mt5225.com</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
   <scm class="hudson.plugins.git.GitSCM" plugin="git@3.12.0">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
@@ -42,7 +53,7 @@ tf destroy -auto-approve
 
 
 echo === create new zone   ======
-tf apply -auto-approve
+tf apply -var &apos;zone_name=$ZONE_NAME&apos; -auto-approve
 
 
 echo ===    done           ======

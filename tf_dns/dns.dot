@@ -1,0 +1,33 @@
+digraph {
+	compound = "true"
+	newrank = "true"
+	subgraph "root" {
+		"[root] aws_route53_record.sub" [label = "aws_route53_record.sub", shape = "box"]
+		"[root] aws_route53_record.subsub" [label = "aws_route53_record.subsub", shape = "box"]
+		"[root] aws_route53_zone.primary" [label = "aws_route53_zone.primary", shape = "box"]
+		"[root] local.cname_records" [label = "local.cname_records", shape = "note"]
+		"[root] local.subs" [label = "local.subs", shape = "note"]
+		"[root] provider.aws" [label = "provider.aws", shape = "diamond"]
+		"[root] var.cnames" [label = "var.cnames", shape = "note"]
+		"[root] var.region" [label = "var.region", shape = "note"]
+		"[root] var.sub_domains" [label = "var.sub_domains", shape = "note"]
+		"[root] var.ttl" [label = "var.ttl", shape = "note"]
+		"[root] var.zone_name" [label = "var.zone_name", shape = "note"]
+		"[root] aws_route53_record.sub" -> "[root] aws_route53_zone.primary"
+		"[root] aws_route53_record.sub" -> "[root] var.sub_domains"
+		"[root] aws_route53_record.sub" -> "[root] var.ttl"
+		"[root] aws_route53_record.subsub" -> "[root] local.cname_records"
+		"[root] aws_route53_zone.primary" -> "[root] provider.aws"
+		"[root] aws_route53_zone.primary" -> "[root] var.zone_name"
+		"[root] local.cname_records" -> "[root] aws_route53_record.sub"
+		"[root] local.cname_records" -> "[root] var.cnames"
+		"[root] local.subs" -> "[root] aws_route53_record.sub"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] aws_route53_record.subsub"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] local.subs"
+		"[root] provider.aws (close)" -> "[root] aws_route53_record.subsub"
+		"[root] provider.aws" -> "[root] var.region"
+		"[root] root" -> "[root] meta.count-boundary (EachMode fixup)"
+		"[root] root" -> "[root] provider.aws (close)"
+	}
+}
+
