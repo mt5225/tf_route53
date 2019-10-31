@@ -1,4 +1,4 @@
-# Technical Execises
+# TF Technical Execises
 
 - Using Terraform with variables from a file we'd like to manage a DNS Zone in Route53.
 - Create a Terraform project.
@@ -15,5 +15,3 @@ Create a jenkins instance and job to run the terraform code on checkin to git.
 - ``tf_dns``  tf code to create Route53 records
 - ``jenkins`` exported jenkins job def
 
-# Getcha !
-- need to destroy before apply, otherwise you may got is ``Error: Cycle: aws_route53_record`` error while apply to exist zone
