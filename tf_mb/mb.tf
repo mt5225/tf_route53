@@ -1,9 +1,9 @@
 /* 
-                      //-> rule01  ----------------------------> hosts_target01 -> server-01
+                      //-> rule01  ------------[header]-----------> hosts_target01 -> server-01
       /^-listener[80] //-> ruleN -> ...                           ^
 lb ==+                //-> default -> front_end_tg[80]           /
       \                                                         /
-       \+-listener[443] //-> rule01  -------------------------+>
+       \+-listener[443] //-> rule01  ---------[header]--------+>
                         //-> ruleN -> ...
                         //-> default ->front_end_tg[443]
 */
