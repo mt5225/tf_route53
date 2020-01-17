@@ -1,10 +1,11 @@
 /* 
                       //-> rule01  ----------------------------> hosts_target01 -> server-01
-      /^-listener[80] //-> rule02 -> ...                          ^
-lb ==+                //-> default_action -> front_end_tg        /
+      /^-listener[80] //-> ruleN -> ...                           ^
+lb ==+                //-> default -> front_end_tg[80]           /
       \                                                         /
-       \+-listener[443] // -> rule01 -> hosts_target2_1 ------>/
-
+       \+-listener[443] //-> rule01  -------------------------+>
+                        //-> ruleN -> ...
+                        //-> default ->front_end_tg[443]
 */
 
 variable "listeners" {
