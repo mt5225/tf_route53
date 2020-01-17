@@ -1,21 +1,39 @@
+/* 
+                      //-> rule01  ----------------------------> hosts_target01 -> server-01
+      /^-listener[80] //-> rule02 -> ...                          ^
+lb ==+                //-> default_action -> front_end_tg        /
+      \                                                         /
+       \+-listener[443] // -> rule01 -> hosts_target2_1 ------>/
+
+*/
+
+variable "listeners" {
+  description = "listener settings"
+  type        = list
+  default = [{
+    port  = "80",
+    proto = "http"
+    }, {
+    port  = "443",
+    proto = "https"
+  }]
+
+}
+
 locals {
   server_count = 0 #3
 }
 
 locals {
-  do_lb = 0 #1
-}
-
-locals {
   subdomain_prefix = "app"
+  rule_hoststarget = setproduct(aws_lb_listener.front_end.*.arn, aws_lb_target_group.*.arn)
 }
 
 resource "aws_lb" "elb" {
-  count              = local.do_lb
   name               = "test-lb-tf"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = ["${aws_security_group.lb_sg.id}"]
+  security_groups    = [aws_security_group.lb_sg.id]
   subnets            = ["subnet-09249a92f6e47afd4", "subnet-010f7f6678db9bb3a", "subnet-075758b93d48e7cfb"] # ${module.vpc.aws_subnet.public.*.id} TODO use module outputs 
 
   enable_deletion_protection = false
@@ -47,19 +65,19 @@ resource "aws_security_group" "lb_sg" {
 }
 
 resource "aws_lb_target_group" "front_end" {
-  count      = local.do_lb
+  count      = local.length(listeners)
   name       = "tf-example-lb-tg"
-  port       = 80
-  protocol   = "HTTP"
+  port       = listeners[count.index].port
+  protocol   = listeners[count.index].proto
   vpc_id     = module.vpc.vpc_id
   slow_start = 600 # 60 seconds * 10
 }
 
 resource "aws_lb_listener" "front_end" {
-  count             = local.do_lb
-  load_balancer_arn = element(aws_lb.elb[*].arn, count.index)
-  port              = "80"
-  protocol          = "HTTP"
+  count             = local.length(listeners)
+  load_balancer_arn = aws_lb.elb.arn
+  port              = listeners[count.index].port
+  protocol          = listeners[count.index].proto
   #   ssl_policy        = "ELBSecurityPolicy-2016-08"
   #   certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"
 
@@ -71,18 +89,18 @@ resource "aws_lb_listener" "front_end" {
 
 
 resource "aws_lb_listener_rule" "hosts_rule" {
-  count        = local.server_count
-  listener_arn = "${aws_lb_listener.front_end.arn}"
+  count        = length(local.rule_hoststarget)
+  listener_arn = local.rule_hoststarget[count.index][0]
   priority     = "${count.index + 90}"
 
   action {
     type             = "forward"
-    target_group_arn = element(aws_lb_target_group.hosts_target.*.arn, count.index)
+    target_group_arn = local.rule_hoststarget[count.index][1]
   }
 
   condition {
     host_header {
-      values = ["${local.subdomain_prefix}${count.index + 1}.baitelman.xyz"]
+      values = ["${local.subdomain_prefix}${count.index % local.server_count + 1}.baitelman.xyz"]
     }
   }
 }
